@@ -261,12 +261,25 @@
         return ret;
     };
 
+    class HTMLError {
+        constructor(type, location, message, extract)  {
+            this.type = type;
+            this.location = location;
+            this.message = message;
+            this.extract = extract;
+        }
+
+
+    }
+
     var getHTMLErrors = function() {
-        $.get(jQuery('body'), function(html) {
+        $.get('#', function(html) {
 
             var formData = new FormData();
             formData.append('out', 'json');
             formData.append('content', html);
+
+            var errors = [];
             
             $.ajax({
                 url: "https://html5.validator.nu/",
@@ -276,7 +289,13 @@
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    return(data.messages); // data.messages is an array
+                    for (i=0; i < data.messages.length; i++) {
+                        var message = data.messages[i];
+                        if (message.type === 'error') {
+                        errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract))
+                    }
+                    }
+                    console.log(errors);
                 },
                 error: function() {
                    console.log(arguments);
@@ -286,12 +305,10 @@
     };
 
     var getHTMLInfo = function () {
+        // As getHTMLErrors is Async so moving it out into another thread
+        getHTMLErrors();
         var ret = '';
-        var errors = getHTMLErrors();
-
-        console.log(errors);
-
-        ret = '<h4>Hello World</h4>';
+        ret = '<h4>Analysing your HTML...</h4>';
         return ret;
     };
 
