@@ -289,7 +289,7 @@
         var ret = ''
         var errors = getHTMLErrors();
 
-        console.log(errors)
+        console.log(errors);
 
         ret = '<h4>Hello World</h4>';
         return ret;
