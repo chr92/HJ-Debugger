@@ -31,7 +31,7 @@
 
 
     var afterJQuery = function () {
-        loadRef('https://raw.githubusercontent.com/chr92/HotJar-Debugger/master/hjDebugger.css?r=' + Date.now());
+        loadRef('https://rawgit.com/chr92/HotJar-Debugger/master/hjDebugger.css?r=' + Date.now());
         loadRef('https://code.jquery.com/ui/1.10.1/themes/smoothness/jquery-ui.css');
         loadRef('https://code.jquery.com/ui/1.10.1/jquery-ui.min.js');
         loadRef('https://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js');
