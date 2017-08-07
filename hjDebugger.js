@@ -31,7 +31,7 @@
 
 
     var afterJQuery = function () {
-        loadRef('//cdn2.hubspot.net/hubfs/1951809/debugger/hjDebugger.css?r=' + Date.now());
+        loadRef('/hjDebugger.css?r=' + Date.now());
         loadRef('https://code.jquery.com/ui/1.10.1/themes/smoothness/jquery-ui.css');
         loadRef('https://code.jquery.com/ui/1.10.1/jquery-ui.min.js');
         loadRef('https://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js');
@@ -63,12 +63,14 @@
                 '       <li class="_hjDebuggerSection' + (hjSiteSettings.polls.length > 0 ? ' on' : '') + '" id="_hjDebuggerSectionPolls"><span>' + hjSiteSettings.polls.length + '</span></li>' +
                 '       <li class="_hjDebuggerSection' + (hjSiteSettings.surveys.length > 0 ? ' on' : '') + '" id="_hjDebuggerSectionSurveys"><span>' + hjSiteSettings.surveys.length + '</span></li>' +
                 '       <li class="_hjDebuggerSection' + (hjSiteSettings.testers_widgets.length > 0 ? ' on' : '') + '" id="_hjDebuggerSectionRecruiters"><span>' + hjSiteSettings.testers_widgets.length + '</span></li>' +
+                '       <li class="_hjDebuggerSection on) + " id="_hjDebuggerSectionHTML"><span id="HTMLErrors">0</span></li>' +
                 '   </ul><div class="_hjDebuggerTab open" id="_hjDebuggerTabHeatmaps">' + getHeatmapInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecording">' + getRecordingInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabForms">' + getFormInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabPolls">' + getPollInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabSurveys">' + getSurveyInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getTesterInfo() + '</div>' +
+                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getHTMLInfo() + '</div>' +
                 '</div>'
                 );
             setTimeout(function () {
@@ -256,6 +258,12 @@
         });
         ret += '</ul>';
         if (hjSiteSettings.testers_widgets.length == 0) ret = 'No recruiters';
+        return ret;
+    };
+
+    var getHTMLInfo = function () {
+        var ret = ''
+        ret = '<h4>Hello World</h4>';
         return ret;
     };
 
