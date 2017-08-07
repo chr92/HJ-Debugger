@@ -70,7 +70,7 @@
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabPolls">' + getPollInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabSurveys">' + getSurveyInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getTesterInfo() + '</div>' +
-                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getHTMLInfo() + '</div>' +
+                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML">' + getHTMLInfo() + '</div>' +
                 '</div>'
                 );
             setTimeout(function () {
@@ -261,8 +261,36 @@
         return ret;
     };
 
+    var getHTMLErrors = function() {
+                $.get('#', function(html) {
+
+            var formData = new FormData();
+            formData.append('out', 'json');
+            formData.append('content', html);
+            
+            $.ajax({
+                url: "https://html5.validator.nu/",
+                data: formData,
+                dataType: "json",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    return(data.messages); // data.messages is an array
+                },
+                error: function() {
+                   console.log(arguments);
+                }
+            });
+        });
+    }
+
     var getHTMLInfo = function () {
         var ret = ''
+        var errors = getHTMLErrors();
+
+        console.log(errors)
+
         ret = '<h4>Hello World</h4>';
         return ret;
     };
