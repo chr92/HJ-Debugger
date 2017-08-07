@@ -26,6 +26,10 @@ Handle return / display of errors
 [x] Create an errors class
 [x] Create an array of errors objects
 
+### Random
+
+[] Should the table generating code be refactored?
+
 ## New code
 
 ```javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://rawgit.com/chr92/HotJar-Debugger/master/hjDebugger.js?r='+Date.now();})();```
