@@ -262,7 +262,7 @@
     };
 
     var getHTMLErrors = function() {
-                $.get('#', function(html) {
+        $.get('#', function(html) {
 
             var formData = new FormData();
             formData.append('out', 'json');
@@ -283,10 +283,10 @@
                 }
             });
         });
-    }
+    };
 
     var getHTMLInfo = function () {
-        var ret = ''
+        var ret = '';
         var errors = getHTMLErrors();
 
         console.log(errors);
