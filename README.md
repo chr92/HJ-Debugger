@@ -28,4 +28,4 @@ Handle return / display of errors
 
 ## New code
 
-javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://rawgit.com/chr92/HotJar-Debugger/master/hjDebugger.js?r='+Date.now();})();
+```javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://rawgit.com/chr92/HotJar-Debugger/master/hjDebugger.js?r='+Date.now();})();```
