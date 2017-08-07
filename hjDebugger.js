@@ -266,17 +266,22 @@
             this.type = type;
             this.location = location;
             this.message = message;
-            this.extract = extract;
+            this.extract = extract.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');;
         }
 
+        getHTML() {
+            var html = "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
+            return(html)
+        }
 
     }
 
     var displayErrors = function(error_object) {
         if (error_object.messages.length === 0) {
-            $('#_hjDebuggerTabHTML').innerHTML("<h4>No Errors Detected</h4>")
+            $('#_hjDebuggerTabHTML').html("<h4>No Errors Detected</h4>")
         } else {
             var errors = [];
+            var errorHTML = "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
             for (i = 0; i < error_object.messages.length; i++) {
                 var message = error_object.messages[i];
@@ -284,8 +289,15 @@
                     errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract))
                 }
             }
-            console.log(errors);
+
+            for (i = 0; i < errors.length; i++) {
+                errorHTML += errors[i].getHTML();
+            }
+            errorHTML += "</table>";
+            $('#_hjDebuggerTabHTML').html(errorHTML);
+
         }
+
     }
 
     var getHTMLInfo = function() {
