@@ -6,25 +6,25 @@
 
 Set up additional tab
 
-- Set up formatting for tab
-- Give tab an icon
-- Set up CSS for displaying list of errors
+[x] Set up formatting for tab
+[] Give tab an icon
+[] Set up CSS for displaying list of errors
 
 Display of errors
 
-- Parse array of errors objects
-- Populate errors HTML
+[x] Parse array of errors objects
+[x] Populate errors HTML
 
 ### Error Detection
 
 Set up JS sending HTML to W3C
 
-- Use example code in OneNote
+[x] Use example code in OneNote
 
 Handle return / display of errors
 
-- Create an errors class
-- Create an array of errors objects
+[x] Create an errors class
+[x] Create an array of errors objects
 
 ## New code
 

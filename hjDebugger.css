@@ -248,3 +248,6 @@
     text-decoration: none !important;
 }
 	
+table {
+    overflow-x:auto;
+}

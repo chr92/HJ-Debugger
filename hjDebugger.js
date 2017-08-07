@@ -277,13 +277,18 @@
     }
 
     var displayErrors = function(error_object) {
-        if (error_object.messages.length === 0) {
+        var errorCount = error_object.messages.length;
+
+        if (errorCount === 0) {
             $('#_hjDebuggerTabHTML').html("<h4>No Errors Detected</h4>")
         } else {
             var errors = [];
+            $("#HTMLErrors").html(errorCount);
+            $("#_hjDebuggerSectionHTML").addClass("on");
+
             var errorHTML = "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
-            for (i = 0; i < error_object.messages.length; i++) {
+            for (i = 0; i < errorCount; i++) {
                 var message = error_object.messages[i];
                 if (message.type === 'error') {
                     errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract))
