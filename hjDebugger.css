@@ -154,8 +154,12 @@
     background-image: url(//cdn2.hubspot.net/hubfs/1951809/website-files/icon-recruiters-on2x.png);
 }
 
+#_hjDebuggerSectionHTML {
+    background-image: url(https://rawgit.com/chr92/HotJar-Debugger/master/icon-HTML-2x.png);
+}
+
 #_hjDebuggerSectionHTML.on {
-    background-image: url(https://rawgit.com/chr92/HotJar-Debugger/master/icon-HTML2x.png);
+    background-image: url(https://rawgit.com/chr92/HotJar-Debugger/master/icon-HTML-on2x.png);
 }
 
 ._hjDebuggerTab {
