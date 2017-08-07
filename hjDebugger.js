@@ -262,7 +262,7 @@
     };
 
     var getHTMLErrors = function() {
-        $.get('#', function(html) {
+        $.get(jQuery('body'), function(html) {
 
             var formData = new FormData();
             formData.append('out', 'json');
