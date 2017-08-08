@@ -249,7 +249,8 @@
 }
 	
 table {
-    overflow-x:auto;
+    table-layout:fixed;
+    width: 100%;
     overflow-y:auto;
 }
 
