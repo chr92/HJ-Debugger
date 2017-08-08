@@ -299,7 +299,7 @@
 
     var analyseForms = function() {
 
-        var updateFormHTML = function(errors) {
+        var updateFormHTML = function() {
             var errorCount = 0;
             var formAnalysis = "<div id='form-checker'><h5>Form Checker</h5>";
             formAnalysis += "<p id='formCount'>- There are <b>" + formDetails.length + "</b> forms on this page.</p>";
@@ -323,6 +323,12 @@
             if (originalFormCount != currentFormCount) {
                 $('#formComparison').css('color', 'red');
                 errorCount += 1;
+            }
+            if (errorCount > 0) {
+                var current = parseInt($('#HTMLErrors').html());
+                current += errorCount;
+                $('#HTMLErrors').html(current.toString());
+                $("#_hjDebuggerSectionHTML").addClass("on");
             }
         };
 
