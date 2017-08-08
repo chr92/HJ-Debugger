@@ -307,16 +307,16 @@
             formAnalysis += "<p id='inputComparison'>The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</br>";
             $('#_hjDebuggerTabHTML').prepend(formAnalysis);
             if (formsInIframes > 0 ) {
-                $('formsinframes').css({color:red});
+                $('formsinframes').css('color', 'red');
             };
             if (inputsCount > inputsInForms ) {
-                $('inputcount').css({color:red});
+                $('inputcount').css('color', 'red');
             };
             if (originalInputCount != currentInputCount ) {
-                $('inputComparison').css({color:red});
+                $('inputComparison').css('color', 'red');
             };
             if (originalFormCount != currentFormCount ) {
-                $('formComparison').css({color:red});
+                $('formComparison').css('color', 'red');
             };
         }
 
