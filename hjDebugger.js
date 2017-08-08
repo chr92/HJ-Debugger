@@ -305,7 +305,7 @@
             errorHTML += "<h4>✔ Form is not in iFrame</h4>";
             errorHTML += "<h4>✔ All Inputs are inside Form Tags</h4>";
 
-            var errorHTML += "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
+            errorHTML += "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
             for (i = 0; i < errorCount; i++) {
                 var message = error_object.messages[i];
