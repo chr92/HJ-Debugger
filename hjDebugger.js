@@ -302,11 +302,11 @@
         var updateFormHTML = function(errors) {
             var errorCount = 0;
             var formAnalysis = "<div id='form-checker'><h5>Form Checker</h5>";
-            formAnalysis += "<p id='formCount'>There are <b>" + formDetails.length + "</b> forms on this page</p>";
-            formAnalysis += "<p id='iframeCount'>There are <b>" + iframeDetails.length + "</b> iframes on this page</p>";
-            formAnalysis += "<p id='formComparison'>The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</p>";
-            formAnalysis += "<p id='inputcount'>There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</p>";
-            formAnalysis += "<p id='inputComparison'>The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</p>";
+            formAnalysis += "<p id='formCount'>- There are <b>" + formDetails.length + "</b> forms on this page.</p>";
+            formAnalysis += "<p id='iframeCount'>- There are <b>" + iframeDetails.length + "</b> iframes on this page.</p>";
+            formAnalysis += "<p id='formComparison'>- The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</p>";
+            formAnalysis += "<p id='inputcount'>- There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</p>";
+            formAnalysis += "<p id='inputComparison'>- The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</p>";
             $('#_hjDebuggerTabHTML').prepend(formAnalysis);
             if (iframeDetails.length > 0) {
                 $('#iframeCount').css('color', 'orange');
@@ -389,7 +389,7 @@
     };
 
     var displayErrors = function(error_object) {
-        
+
         var errorCount = error_object.messages.length;
 
         if (errorCount === 0) {
