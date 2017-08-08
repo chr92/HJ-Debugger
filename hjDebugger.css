@@ -247,15 +247,19 @@
     background: #e0e0e0 !important;
     text-decoration: none !important;
 }
+
+#_hjDebuggerSectionHTML {
+    color: black;
+    font-size: 12px;
+    text-align: left;
+}
 	
 table {
     table-layout:fixed;
     width: 100%;
-    overflow-y:auto;
 }
 
 th, td {
-    text-align: left;
     vertical-align: top;
     padding: 5px;
     border-bottom: 1px solid #ddd;
