@@ -102,7 +102,7 @@
                     containment: "window",
                     handle: '#_hjDebuggerWindowTitle',
                     stop: function(event, ui) {
-                        hj.cookie.set('_hjDebuggerPosition', ui.position.left + ',' + ui.position.top)
+                        hj.cookie.set('_hjDebuggerPosition', ui.position.left + ',' + ui.position.top);
                     },
                     scroll: false
                 });
@@ -123,7 +123,7 @@
                         jQuery(this).text(jQuery(this).text().replace('Hide', 'Show'));
                     }
 
-                })
+                });
             }, 10);
 
         })();
@@ -267,51 +267,106 @@
             this.location = location;
             this.message = message;
             if (extract.indexOf("<form>") >= 0 || extract.indexOf("<input") >= 0) {
-                this.formIssue = true
+                this.formIssue = true;
             } else {
-                this.formIssue = false
+                this.formIssue = false;
             }
-            this.extract = extract.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');;
+            this.extract = extract.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
         getHTML() {
             var html = "";
             // TODO turn this into actual checks
             if (this.formIssue === true) {
-                html += "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
+                html += "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>";
             } else {
-                html += "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
+                html += "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>";
             }
-            return (html)
+            return (html);
         }
 
     }
+
+    var analyseForms = function() {
+
+        // Check inputs exist, and are all in forms
+
+        var inputsCount = 0;
+        var inputsInForms = 0;
+        var allInputsInForms = false;
+
+        if ($('input').length) {
+            inputsCount = $('input').length;
+            $('input').each(function(input) {
+                var parentObjects = $(this).parents();
+                var formFound = false;
+                for (i = 0; i < parentObjects.length; i++) {
+                    if ($(parentObjects[i]).is('form') && formFound === false) {
+                        inputsInForms += 1;
+                        formFound = true;
+                    }
+                }
+            });
+            if (inputsCount === inputsInForms) {
+                allInputsInForms = true;
+            }
+        }
+
+        // check if forms exist, and if so, if any are in iFrames
+
+        var formCount = 0;
+        var formsInIframes = 0;
+        var allFormsInIframes = false;
+
+        if ($('form').length) {
+            formCount = $('form').length;
+            $('form').each(function(input) {
+                var parentObjects = $(this).parents();
+                var iframeFound = false;
+                for (i = 0; i < parentObjects.length; i++) {
+                    if ($(parentObjects[i]).is('iframe') && iframeFound === false) {
+                        formsInIframes += 1;
+                        iframeFound = true;
+                    }
+                }
+            });
+
+            if (formCount === formsInIframes) {
+                allFormsInIframes = true;
+            }
+        }
+
+        // Check for inputs and forms that were added by JavaScript
+
+        if (formCount > 0 || inputsCount > 0) {
+
+            var originalHTML = "";
+            var finalHTML = $('html')[0].outerHTML;
+
+            $.get(document.location.href, function(data) {
+                originalHTML = data;
+            }).done(function() {
+                
+            })
+        }
+    };
 
     var displayErrors = function(error_object) {
         var errorCount = error_object.messages.length;
 
         if (errorCount === 0) {
-            $('#_hjDebuggerTabHTML').html("<h4>No Errors Detected</h4>")
+            $('#_hjDebuggerTabHTML').html("<h4>No Errors Detected</h4>");
         } else {
             var errors = [];
             $("#HTMLErrors").html(errorCount);
             $("#_hjDebuggerSectionHTML").addClass("on");
 
-            var errorHTML = "";
-
-            // TODO refactor this to actually check for errors
-
-            errorHTML += "<h4>1 Form Detected</h4>";
-            errorHTML += "<h4>✔ Form is part of original HTML</h4>";
-            errorHTML += "<h4>✔ Form is not in iFrame</h4>";
-            errorHTML += "<h4>✔ All Inputs are inside Form Tags</h4>";
-
-            errorHTML += "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
+            var errorHTML = "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
             for (i = 0; i < errorCount; i++) {
                 var message = error_object.messages[i];
                 if (message.type === 'error') {
-                    errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract))
+                    errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract));
                 }
             }
 
@@ -324,7 +379,7 @@
 
         }
 
-    }
+    };
 
     var getHTMLInfo = function() {
         var ret = '';
@@ -345,13 +400,14 @@
                 contentType: false,
                 success: function(data) {
                     displayErrors(data);
-
                 },
                 error: function() {
                     console.log(arguments);
                 }
             });
         });
+
+        analyseForms();
 
         ret = '<h4>Analysing your HTML...</h4>';
         return ret;
