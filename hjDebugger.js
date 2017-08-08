@@ -31,7 +31,7 @@
 
 
     var afterJQuery = function() {
-        loadRef('https://rawgit.com/chr92/HotJar-Debugger/master/hjDebugger.css?r=' + Date.now());
+        loadRef('https://chr92.github.io/HJ-Debugger/hjDebugger.css?r=' + Date.now());
         loadRef('https://code.jquery.com/ui/1.10.1/themes/smoothness/jquery-ui.css');
         loadRef('https://code.jquery.com/ui/1.10.1/jquery-ui.min.js');
         loadRef('https://cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js');
@@ -267,10 +267,15 @@
             this.location = location;
             this.message = message;
             this.extract = extract.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');;
+            if (extract.indexOf("<form>") >= 0 || extract.indexOf("<input") >= 0) {
+                this.formIssue = true
+            } else {
+                this.formIssue = false
+            }
         }
 
         getHTML() {
-            var html = "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
+            var html = "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
             return(html)
         }
 
@@ -298,6 +303,7 @@
             for (i = 0; i < errors.length; i++) {
                 errorHTML += errors[i].getHTML();
             }
+
             errorHTML += "</table>";
             $('#_hjDebuggerTabHTML').html(errorHTML);
 

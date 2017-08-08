@@ -155,11 +155,11 @@
 }
 
 #_hjDebuggerSectionHTML {
-    background-image: url(https://rawgit.com/chr92/HotJar-Debugger/master/icon-HTML-2x.png);
+    background-image: url(https://chr92.github.io/HJ-Debugger/icon-HTML-2x.png);
 }
 
 #_hjDebuggerSectionHTML.on {
-    background-image: url(https://rawgit.com/chr92/HotJar-Debugger/master/icon-HTML-on2x.png);
+    background-image: url(https://chr92.github.io/HJ-Debugger/icon-HTML-on2x.png);
 }
 
 ._hjDebuggerTab {

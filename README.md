@@ -26,10 +26,15 @@ Handle return / display of errors
 [x] Create an errors class
 [x] Create an array of errors objects
 
+### No Forms
+
+[] Return a count of forms 
+
 ### Random
 
 [] Should the table generating code be refactored?
+[] Highlight any issues that occur within a `<form>`
 
 ## New code
 
-```javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://rawgit.com/chr92/HotJar-Debugger/master/hjDebugger.js?r='+Date.now();})();```
+```javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://chr92.github.io/HJ-Debugger/hjDebugger.js?r='+Date.now();})();```
