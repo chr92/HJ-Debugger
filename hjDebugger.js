@@ -266,16 +266,16 @@
             this.type = type;
             this.location = location;
             this.message = message;
-            this.extract = extract.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');;
             if (extract.indexOf("<form>") >= 0 || extract.indexOf("<input") >= 0) {
                 this.formIssue = true
             } else {
                 this.formIssue = false
             }
+            this.extract = extract.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');;
         }
 
         getHTML() {
-            if (this.formIssue = true) {
+            if (this.formIssue === true) {
                 var html = "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
             } else {
                 var html = "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
