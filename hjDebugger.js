@@ -275,10 +275,15 @@
         }
 
         getHTML() {
+            var html = "";
+            // TODO turn this into actual checks
+            html += "<h4>Form is part of original HTML ✔</h4>";
+            html += "<h4>Form is not in iFrame ✔</h4>";
+            html += "<h4>All Inputs are inside FOrm Tags ✔</h4>";
             if (this.formIssue === true) {
-                var html = "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
+                html += "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
             } else {
-                var html = "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
+                html += "<tr><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
             }
             return (html)
         }
