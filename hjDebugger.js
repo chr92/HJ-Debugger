@@ -300,23 +300,28 @@
     var analyseForms = function() {
 
         var updateFormHTML = function(errors) {
-            var formAnalysis = "<div id='form-checker'><h4>Form Checker</h4>";
+            var errorCount = 0;
+            var formAnalysis = "<div id='form-checker'><h5>Form Checker</h5>";
             formAnalysis += "<p id='formsinframes'>There are <b>" + formCount + "</b> forms.<b> " + formsInIframes + "</b> of them are in iframes.</br>";
             formAnalysis += "<p id='formComparison'>The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</br></div>";
             formAnalysis += "<p id='inputcount'>There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</br>";
             formAnalysis += "<p id='inputComparison'>The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</br>";
             $('#_hjDebuggerTabHTML').prepend(formAnalysis);
             if (formsInIframes > 0 ) {
-                $('formsinframes').css('color', 'red');
+                $('#formsinframes').css('color', 'red');
+                errorCount += 1;
             };
             if (inputsCount > inputsInForms ) {
-                $('inputcount').css('color', 'red');
+                $('#inputcount').css('color', 'red');
+                errorCount += 1;
             };
             if (originalInputCount != currentInputCount ) {
-                $('inputComparison').css('color', 'red');
+                $('#inputComparison').css('color', 'red');
+                errorCount += 1;
             };
             if (originalFormCount != currentFormCount ) {
-                $('formComparison').css('color', 'red');
+                $('#formComparison').css('color', 'red');
+                errorCount += 1;
             };
         }
 
@@ -342,6 +347,9 @@
         }
 
         // check if forms exist, and if so, if any are in iFrames
+        // THIS ISN'T WORKING!! need to get inside iframes first?
+        // iframes need to be same domain for javascript stuff.
+        // What if I grab iframe contents via http and compare that way...
 
         var formCount = 0;
         var formsInIframes = 0;
@@ -393,13 +401,13 @@
         var errorCount = error_object.messages.length;
 
         if (errorCount === 0) {
-            $('#_hjDebuggerTabHTML').append("<h4>No Errors Detected</h4>");
+            $('#_hjDebuggerTabHTML').append("<h5>No Errors Detected</h5>");
         } else {
             var errors = [];
             $("#HTMLErrors").html(errorCount);
             $("#_hjDebuggerSectionHTML").addClass("on");
 
-            var errorHTML = "<h4>HTML Errors</h4><table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
+            var errorHTML = "<h5>HTML Errors</h5><table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
             for (i = 0; i < errorCount; i++) {
                 var message = error_object.messages[i];
