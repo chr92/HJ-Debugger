@@ -287,9 +287,38 @@
 
     }
 
+    var getInputCount = function(string, input) {
+        var count = 0;
+        var pos = string.indexOf(input);
+        while (pos > -1) {
+            ++count;
+            pos = string.indexOf(input, ++pos);
+        }
+        return (count);
+    }
+
     var analyseForms = function() {
 
-        // Check inputs exist, and are all in forms
+        var updateFormHTML = function(errors) {
+            var formAnalysis = "<div id='form-checker'><h4>Form Checker</h4>";
+            formAnalysis += "<p id='formsinframes'>There are <b>" + formCount + "</b> forms.<b> " + formsInIframes + "</b> of them are in iframes.</br>";
+            formAnalysis += "<p id='formComparison'>The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</br></div>";
+            formAnalysis += "<p id='inputcount'>There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</br>";
+            formAnalysis += "<p id='inputComparison'>The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</br>";
+            $('#_hjDebuggerTabHTML').prepend(formAnalysis);
+            if (formsInIframes > 0 ) {
+                $('formsinframes').css({color:red});
+            };
+            if (inputsCount > inputsInForms ) {
+                $('inputcount').css({color:red});
+            };
+            if (originalInputCount != currentInputCount ) {
+                $('inputComparison').css({color:red});
+            };
+            if (originalFormCount != currentFormCount ) {
+                $('formComparison').css({color:red});
+            };
+        }
 
         var inputsCount = 0;
         var inputsInForms = 0;
@@ -336,32 +365,41 @@
             }
         }
 
-        // Check for inputs and forms that were added by JavaScript
-
         if (formCount > 0 || inputsCount > 0) {
 
             var originalHTML = "";
-            var finalHTML = $('html')[0].outerHTML;
+            var currentHTML = $('html')[0].outerHTML;
+            var originalInputCount = 0;
+            var originalFormCount = 0;
+            var currentInputCount = 0;
+            var currentFormCount = 0;
 
             $.get(document.location.href, function(data) {
                 originalHTML = data;
             }).done(function() {
-                
+                originalInputCount = getInputCount(originalHTML, "<input");
+                originalFormCount = getInputCount(originalHTML, "<form");
+                currentInputCount = getInputCount(currentHTML, "<input");
+                currentFormCount = getInputCount(currentHTML, "<form");
+                updateFormHTML();
             })
+
         }
+
+
     };
 
     var displayErrors = function(error_object) {
         var errorCount = error_object.messages.length;
 
         if (errorCount === 0) {
-            $('#_hjDebuggerTabHTML').html("<h4>No Errors Detected</h4>");
+            $('#_hjDebuggerTabHTML').append("<h4>No Errors Detected</h4>");
         } else {
             var errors = [];
             $("#HTMLErrors").html(errorCount);
             $("#_hjDebuggerSectionHTML").addClass("on");
 
-            var errorHTML = "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
+            var errorHTML = "<h4>HTML Errors</h4><table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
             for (i = 0; i < errorCount; i++) {
                 var message = error_object.messages[i];
@@ -375,8 +413,7 @@
             }
 
             errorHTML += "</table>";
-            $('#_hjDebuggerTabHTML').html(errorHTML);
-
+            $('#_hjDebuggerTabHTML').append(errorHTML);
         }
 
     };
@@ -409,7 +446,7 @@
 
         analyseForms();
 
-        ret = '<h4>Analysing your HTML...</h4>';
+        ret = '';
         return ret;
     };
 
