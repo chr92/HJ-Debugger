@@ -357,14 +357,24 @@
         var iframeDetails = [];
 
         if ($('form').length) {
-            $('form').each(function () {
-                formDetails.push(this.src);
+            $('form').each(function() {
+                if ($('form').attr('id')) {
+                    if ($('form').attr('id').indexOf('_hj') < 0) {
+                        formDetails.push(this.src);
+                    }
+                } else {
+                    formDetails.push(this.src);
+                }
             })
         }
 
         if ($('iframe').length) {
-            $('iframe').each(function () {
-                if ($('iframe').attr('id') != "_hjRemoteVarsFrame") { 
+            $('iframe').each(function() {
+                if ($('iframe').attr('id')) {
+                    if ($('iframe').attr('id').indexOf('_hj') < 0) {
+                        iframeDetails.push(this.src);
+                    } 
+                } else {
                     iframeDetails.push(this.src);
                 }
             })
