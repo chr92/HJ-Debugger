@@ -253,6 +253,10 @@
     font-size: 12px;
     text-align: left;
 }
+
+#_hjDebuggerSectionHTML p {
+    line-height: 12px;
+}
 	
 table {
     table-layout:fixed;
@@ -268,3 +272,4 @@ th, td {
 tr.form {
     background-color: #ADD8E6;
 }
+

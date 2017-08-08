@@ -295,35 +295,36 @@
             pos = string.indexOf(input, ++pos);
         }
         return (count);
-    }
+    };
 
     var analyseForms = function() {
 
         var updateFormHTML = function(errors) {
             var errorCount = 0;
             var formAnalysis = "<div id='form-checker'><h5>Form Checker</h5>";
-            formAnalysis += "<p id='formsinframes'>There are <b>" + formCount + "</b> forms.<b> " + formsInIframes + "</b> of them are in iframes.</br>";
-            formAnalysis += "<p id='formComparison'>The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</br></div>";
-            formAnalysis += "<p id='inputcount'>There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</br>";
-            formAnalysis += "<p id='inputComparison'>The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</br>";
+            formAnalysis += "<p id='formCount'>There are <b>" + formDetails.length + "</b> forms on this page</p>";
+            formAnalysis += "<p id='iframeCount'>There are <b>" + iframeDetails.length + "</b> iframes on this page</p>";
+            formAnalysis += "<p id='formComparison'>The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</p>";
+            formAnalysis += "<p id='inputcount'>There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</p>";
+            formAnalysis += "<p id='inputComparison'>The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</p>";
             $('#_hjDebuggerTabHTML').prepend(formAnalysis);
-            if (formsInIframes > 0 ) {
-                $('#formsinframes').css('color', 'red');
+            if (iframeDetails.length > 0) {
+                $('#iframeCount').css('color', 'orange');
                 errorCount += 1;
-            };
-            if (inputsCount > inputsInForms ) {
+            }
+            if (inputsCount > inputsInForms) {
                 $('#inputcount').css('color', 'red');
                 errorCount += 1;
-            };
-            if (originalInputCount != currentInputCount ) {
+            }
+            if (originalInputCount != currentInputCount) {
                 $('#inputComparison').css('color', 'red');
                 errorCount += 1;
-            };
-            if (originalFormCount != currentFormCount ) {
+            }
+            if (originalFormCount != currentFormCount) {
                 $('#formComparison').css('color', 'red');
                 errorCount += 1;
-            };
-        }
+            }
+        };
 
         var inputsCount = 0;
         var inputsInForms = 0;
@@ -346,34 +347,24 @@
             }
         }
 
-        // check if forms exist, and if so, if any are in iFrames
-        // THIS ISN'T WORKING!! need to get inside iframes first?
-        // iframes need to be same domain for javascript stuff.
-        // What if I grab iframe contents via http and compare that way...
-
-        var formCount = 0;
-        var formsInIframes = 0;
-        var allFormsInIframes = false;
+        var formDetails = [];
+        var iframeDetails = [];
 
         if ($('form').length) {
-            formCount = $('form').length;
-            $('form').each(function(input) {
-                var parentObjects = $(this).parents();
-                var iframeFound = false;
-                for (i = 0; i < parentObjects.length; i++) {
-                    if ($(parentObjects[i]).is('iframe') && iframeFound === false) {
-                        formsInIframes += 1;
-                        iframeFound = true;
-                    }
-                }
-            });
-
-            if (formCount === formsInIframes) {
-                allFormsInIframes = true;
-            }
+            $('form').each(function () {
+                formDetails.push(this.src);
+            })
         }
 
-        if (formCount > 0 || inputsCount > 0) {
+        if ($('iframe').length) {
+            $('iframe').each(function () {
+                if ($('iframe').attr('id') != "_hjRemoteVarsFrame") { 
+                    iframeDetails.push(this.src);
+                }
+            })
+        }
+
+        if (formDetails.length > 0 || iframeDetails.length > 0) {
 
             var originalHTML = "";
             var currentHTML = $('html')[0].outerHTML;
@@ -390,7 +381,7 @@
                 currentInputCount = getInputCount(currentHTML, "<input");
                 currentFormCount = getInputCount(currentHTML, "<form");
                 updateFormHTML();
-            })
+            });
 
         }
 
@@ -398,6 +389,7 @@
     };
 
     var displayErrors = function(error_object) {
+        
         var errorCount = error_object.messages.length;
 
         if (errorCount === 0) {
