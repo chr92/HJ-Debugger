@@ -254,8 +254,9 @@
     text-align: left;
 }
 
-#_hjDebuggerSectionHTML p {
-    line-height: 12px;
+#form-checker p {
+    line-height: 1;
+    margin: 0;
 }
 	
 table {
