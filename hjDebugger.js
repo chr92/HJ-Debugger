@@ -277,9 +277,6 @@
         getHTML() {
             var html = "";
             // TODO turn this into actual checks
-            html += "<h4>Form is part of original HTML ✔</h4>";
-            html += "<h4>Form is not in iFrame ✔</h4>";
-            html += "<h4>All Inputs are inside FOrm Tags ✔</h4>";
             if (this.formIssue === true) {
                 html += "<tr class=\"form\"><td>" + this.location + "</td><td>" + this.message + "</td><td>" + this.extract + "</td></tr>"
             } else {
@@ -300,7 +297,15 @@
             $("#HTMLErrors").html(errorCount);
             $("#_hjDebuggerSectionHTML").addClass("on");
 
-            var errorHTML = "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
+            var errorHTML = "";
+
+            // TODO refactor this to actually check for errors
+
+            errorHTML += "<h4>Form is part of original HTML ✔</h4>";
+            errorHTML += "<h4>Form is not in iFrame ✔</h4>";
+            errorHTML += "<h4>All Inputs are inside FOrm Tags ✔</h4>";
+
+            var errorHTML += "<table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
 
             for (i = 0; i < errorCount; i++) {
                 var message = error_object.messages[i];
