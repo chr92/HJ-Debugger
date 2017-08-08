@@ -6,34 +6,31 @@
 
 Set up additional tab
 
-[x] Set up formatting for tab
-[] Give tab an icon
-[] Set up CSS for displaying list of errors
+- [x] Set up formatting for tab
+- [x] Give tab an icon
+- [x] Set up CSS for displaying list of errors
 
 Display of errors
 
-[x] Parse array of errors objects
-[x] Populate errors HTML
+- [x] Parse array of errors objects
+- [x] Populate errors HTML
 
 ### Error Detection
 
 Set up JS sending HTML to W3C
 
-[x] Use example code in OneNote
+- [x] Use example code in OneNote
 
 Handle return / display of errors
 
-[x] Create an errors class
-[x] Create an array of errors objects
-
-### No Forms
-
-[] Return a count of forms 
+- [x] Create an errors class
+- [x] Create an array of errors objects
 
 ### Random
 
-[] Should the table generating code be refactored?
-[] Highlight any issues that occur within a `<form>`
+- [] Split feedback into form specific
+- [] What happens if there's no forms originally, but one is injected? Test this
+- [] Return count of HotJar Forms
 
 ## New code
 
