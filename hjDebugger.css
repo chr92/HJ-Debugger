@@ -250,4 +250,6 @@
 	
 table {
     overflow-x:auto;
+    text-align: left;
+    vertical-align: top;
 }
