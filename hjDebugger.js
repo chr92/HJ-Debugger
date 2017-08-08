@@ -301,6 +301,7 @@
 
             // TODO refactor this to actually check for errors
 
+            errorHTML += "<h4>1 Form Detected</h4>";
             errorHTML += "<h4>✔ Form is part of original HTML</h4>";
             errorHTML += "<h4>✔ Form is not in iFrame</h4>";
             errorHTML += "<h4>✔ All Inputs are inside Form Tags</h4>";
