@@ -70,7 +70,7 @@
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabPolls">' + getPollInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabSurveys">' + getSurveyInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getTesterInfo() + '</div>' +
-                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML"><div id=\"formIssues\"><h5>Form issues</h5></div><div id=\"inputIssues\"><h5>Input Issues</h5></h5></div><div id=\"iFrameIssues\"><h5>iFrame Issues<h5></div><div id=\"htmlIssues\"><h5>HTML Issues</h5></div></div>' +
+                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML"><div id=\"htmlIssues\"><h5>HTML Issues</h5></div><div id=\"formIssues\"><h5>Form issues</h5></div><div id=\"inputIssues\"><h5>Input Issues</h5></h5></div><div id=\"iFrameIssues\"><h5>iFrame Issues<h5></div></div>' +
                 '</div>'
             );
 
@@ -363,7 +363,7 @@
         });
 
         if (inputsOutsideForms.length === 0) {
-            $('#inputIssues').html("<h5>Input Issues</h5><p>No Input Issues Detected</p>");
+            $('#inputIssues').html("<h5>Input Issues</h5><p>No HotJar Specific Input Issues Detected</p>");
         } else {
             var count = 1;
             var inputHTML = "<h5>Input Issues</h5><p>" + inputsOutsideForms.length + " inputs detected outside forms, they're higlighted with Red Borders.<br>Here are their IDs:</p>"
@@ -469,7 +469,7 @@
                 if (errorCount) {
                     $('#formIssues').html(errorHTML);
                 } else {
-                    $('#formIssues').html("<h5>Form Issues</h5><p>No Form Issues Detected</p>")
+                    $('#formIssues').html("<h5>Form Issues</h5><p>No HotJar Specific Form Issues Detected</p>")
                 }
 
             });
@@ -495,7 +495,7 @@
         }
 
         if (iframeDetails.length === 0) {
-            $('#iFrameIssues').html("<h5>iFrame Issues</h5><p>No iFrame issues Detected</p>");
+            $('#iFrameIssues').html("<h5>iFrame Issues</h5><p>No HotJar Specific iFrame issues Detected</p>");
         } else {
             var iFrameHTML = "<h5>iFrame Issues</h5><p>There are " + iframeDetails.length + " iFrame(s) Detected on this page. They're highlighted with Orange borders.</p>"
             // Code to run through problematic inputs (and higlight them!)
