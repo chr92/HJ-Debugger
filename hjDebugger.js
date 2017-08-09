@@ -70,9 +70,13 @@
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabPolls">' + getPollInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabSurveys">' + getSurveyInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getTesterInfo() + '</div>' +
-                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML">' + getHTMLInfo() + '</div>' +
+                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML"><div id=\"formIssues\"><h5>Form issues</h5></div><div id=\"inputIssues\"><h5>Input Issues</h5></h5></div><div id=\"iFrameIssues\"><h5>iFrame Issues<h5></div><div id=\"htmlIssues\"><h5>HTML Issues</h5></div></div>' +
                 '</div>'
             );
+
+            // Putting here because a lot of it is Async
+            $(document).ready(getPageAnalysis());
+
             setTimeout(function() {
 
                 if (hj.cookie.get('_hjDebuggerPosition')) {
@@ -287,157 +291,9 @@
 
     }
 
-    var getInputCount = function(string, input) {
-        var count = 0;
-        var pos = string.indexOf(input);
-        while (pos > -1) {
-            ++count;
-            pos = string.indexOf(input, ++pos);
-        }
-        return (count);
-    };
+    var getHTMLErrors = function() {
 
-    var analyseForms = function() {
-
-        var updateFormHTML = function() {
-            var errorCount = 0;
-            var formAnalysis = "<div id='form-checker'><h5>Form Checker</h5>";
-            formAnalysis += "<p id='formCount'>- There are <b>" + formDetails.length + "</b> forms on this page.</p>";
-            formAnalysis += "<p id='iframeCount'>- There are <b>" + iframeDetails.length + "</b> iframes on this page.</p>";
-            formAnalysis += "<p id='formComparison'>- The original HTML has <b>" + originalFormCount + "</b> forms, the current HTML has <b> " + currentFormCount + "</b>.</p>";
-            formAnalysis += "<p id='inputcount'>- There are <b>" + inputsCount + "</b> inputs.<b> " + inputsInForms + "</b> of them are in forms.</p>";
-            formAnalysis += "<p id='inputComparison'>- The original HTML has <b>" + originalInputCount + "</b> inputs, current HTML has <b> " + currentInputCount + "</b>.</p>";
-            $('#_hjDebuggerTabHTML').prepend(formAnalysis);
-            if (iframeDetails.length > 0) {
-                $('#iframeCount').css('color', 'orange');
-                errorCount += 1;
-            }
-            if (inputsCount > inputsInForms) {
-                $('#inputcount').css('color', 'red');
-                errorCount += 1;
-            }
-            if (originalInputCount != currentInputCount) {
-                $('#inputComparison').css('color', 'red');
-                errorCount += 1;
-            }
-            if (originalFormCount != currentFormCount) {
-                $('#formComparison').css('color', 'red');
-                errorCount += 1;
-            }
-            if (errorCount > 0) {
-                var current = parseInt($('#HTMLErrors').html());
-                current += errorCount;
-                $('#HTMLErrors').html(current.toString());
-                $("#_hjDebuggerSectionHTML").addClass("on");
-            }
-        };
-
-        var inputsCount = 0;
-        var inputsInForms = 0;
-        var allInputsInForms = false;
-
-        if ($('input').length) {
-            inputsCount = $('input').length;
-            $('input').each(function(input) {
-                var parentObjects = $(this).parents();
-                var formFound = false;
-                for (i = 0; i < parentObjects.length; i++) {
-                    if ($(parentObjects[i]).is('form') && formFound === false) {
-                        inputsInForms += 1;
-                        formFound = true;
-                    }
-                }
-            });
-            if (inputsCount === inputsInForms) {
-                allInputsInForms = true;
-            }
-        }
-
-        var formDetails = [];
-        var iframeDetails = [];
-
-        if ($('form').length) {
-            $('form').each(function() {
-                if ($('form').attr('id')) {
-                    if ($('form').attr('id').indexOf('_hj') < 0) {
-                        formDetails.push(this.src);
-                    }
-                } else {
-                    formDetails.push(this.src);
-                }
-            })
-        }
-
-        if ($('iframe').length) {
-            $('iframe').each(function() {
-                if ($('iframe').attr('id')) {
-                    if ($('iframe').attr('id').indexOf('_hj') < 0) {
-                        iframeDetails.push(this.src);
-                    } 
-                } else {
-                    iframeDetails.push(this.src);
-                }
-            })
-        }
-
-        if (formDetails.length > 0 || iframeDetails.length > 0) {
-
-            var originalHTML = "";
-            var currentHTML = $('html')[0].outerHTML;
-            var originalInputCount = 0;
-            var originalFormCount = 0;
-            var currentInputCount = 0;
-            var currentFormCount = 0;
-
-            $.get(document.location.href, function(data) {
-                originalHTML = data;
-            }).done(function() {
-                originalInputCount = getInputCount(originalHTML, "<input");
-                originalFormCount = getInputCount(originalHTML, "<form");
-                currentInputCount = getInputCount(currentHTML, "<input");
-                currentFormCount = getInputCount(currentHTML, "<form");
-                updateFormHTML();
-            });
-
-        }
-
-
-    };
-
-    var displayErrors = function(error_object) {
-
-        var errorCount = error_object.messages.length;
-
-        if (errorCount === 0) {
-            $('#_hjDebuggerTabHTML').append("<h5>No HTML Errors Detected</h5>");
-        } else {
-            var errors = [];
-            $("#HTMLErrors").html(errorCount);
-            $("#_hjDebuggerSectionHTML").addClass("on");
-
-            var errorHTML = "<h5>HTML Errors</h5><table><tr><th>Line</th><th>Error</th><th>Extract</th></tr>";
-
-            for (i = 0; i < errorCount; i++) {
-                var message = error_object.messages[i];
-                if (message.type === 'error') {
-                    errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract));
-                }
-            }
-
-            for (i = 0; i < errors.length; i++) {
-                errorHTML += errors[i].getHTML();
-            }
-
-            errorHTML += "</table>";
-            $('#_hjDebuggerTabHTML').append(errorHTML);
-        }
-
-    };
-
-    var getHTMLInfo = function() {
-        var ret = '';
-
-        // ASYNC!
+        // Get HTML Errors
         $.get('#', function(html) {
 
             var formData = new FormData();
@@ -452,7 +308,33 @@
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    displayErrors(data);
+                    var errorCount = data.messages.length;
+
+                    if (errorCount === 0) {
+                        $('#htmlIssues').html("<h5>HTML Issues</h5><p>No HTML issues detected</p>");
+                    } else {
+                        var errors = [];
+                        $("#_hjDebuggerSectionHTML").addClass("on");
+
+                        var errorHTML = "<h5>HTML Issues</h5><table><tr><th>Line</th><th>Error</th><th>Extract</th></tr><p>Form/Input errors are higlighted in Blue</p>";
+
+                        for (i = 0; i < errorCount; i++) {
+                            var message = data.messages[i];
+                            if (message.type === 'error') {
+                                errors.push(new HTMLError(message.type, message.lastLine, message.message, message.extract));
+                            }
+
+                        }
+
+                        totalErrors = errors.length;
+
+                        for (i = 0; i < errors.length; i++) {
+                            errorHTML += errors[i].getHTML();
+                        }
+
+                        errorHTML += "</table>";
+                        $('#htmlIssues').html(errorHTML);
+                    }
                 },
                 error: function() {
                     console.log(arguments);
@@ -460,10 +342,210 @@
             });
         });
 
-        analyseForms();
+    };
 
-        ret = '';
-        return ret;
+    var analyseInputData = function() {
+
+        var inputsOutsideForms = [];
+
+        inputsCount = $('input').length;
+        $('input').each(function(input) {
+            var parentObjects = $(this).parents();
+            var formFound = false;
+            for (i = 0; i < parentObjects.length; i++) {
+                if ($(parentObjects[i]).is('form') && formFound === false) {
+                    formFound = true;
+                }
+            }
+            if (formFound === false) {
+                inputsOutsideForms.push(this);
+            }
+        });
+
+        if (inputsOutsideForms.length === 0) {
+            $('#inputIssues').html("<h5>Input Issues</h5><p>No Input Issues Detected</p>");
+        } else {
+            var count = 1;
+            var inputHTML = "<h5>Input Issues</h5><p>" + inputsOutsideForms.length + " inputs detected outside forms, they're higlighted with Red Borders.<br>Here are their IDs:</p>"
+            $(inputsOutsideForms).each(function() {
+                $(this).css('border', '10px solid red');
+                inputHTML += "<p>" + count + ". " + $(this).attr('id') + "</p>";
+            })
+            $('#inputIssues').html(inputHTML);
+        }
+
+    }
+
+    analyseFormData = function() {
+
+        var currentForms = [];
+        var currentInputs = [];
+
+        $('form').each(function() {
+            if ($(this).attr('id')) {
+                if ($(this).attr('id').indexOf('_hj') < 0) {
+                    currentForms.push(this);
+                }
+            } else {
+                currentForms.push(this);
+            }
+        });
+
+        $('input').each(function() {
+            if ($(this).attr('id')) {
+                if ($(this).attr('id').indexOf('_hj') < 0) {
+                    currentInputs.push(this);
+                }
+            } else {
+                currentInputs.push(this);
+            }
+        });
+
+        var originalForms = [];
+        var originalInputs = [];
+
+        $.get(document.location.href, function(data) {
+            originalHTML = data;
+        }).done(function() {
+            $("<div>", { html: originalHTML }).find('form').each(function() {
+                if ($(this).attr('id')) {
+                    if ($(this).attr('id').indexOf('_hj') < 0) {
+                        originalForms.push(this);
+                    }
+                } else {
+                    originalForms.push(this);
+                }
+            })
+
+            var errorCount = 0;
+            var errorHTML = "<h5>Form Issues</h5><p>Issues highlighted in yellow</p>"
+
+            // 1a. Are forms part of original HTML?
+
+            if (currentForms.length != originalForms.length) {
+
+                for (i = 0; i < currentForms.length; i++) {
+                    console.log(jQuery.inArray(currentForms[i], originalForms));
+                    if (jQuery.inArray(currentForms[i], originalForms) === -1) {
+                        $(currentForms[i]).css('border', '10px solid yellow');
+                        errorHTML += "<p>Form element(s) not originally part of page. It has the contents <b>" + $(currentForms[i]).text() + ".</b></p>"
+                        errorCount++;
+                    }
+                }
+            }
+
+            // 1b. Get inputs in forms, are they part of original HTML?
+
+            $.get(document.location.href, function(data) {
+                originalHTML = data;
+            }).done(function() {
+                $("<div>", { html: originalHTML }).find('input').each(function() {
+                    if ($(this).attr('id')) {
+                        if ($(this).attr('id').indexOf('_hj') < 0) {
+                            originalInputs.push(this);
+                        }
+                    } else {
+                        originalInputs.push(this);
+                    }
+                })
+
+                if (originalInputs.length != currentInputs.length) {
+
+                    var originalInputNames = [];
+
+                    for (i = 0; i < originalInputs.length; i++) {
+                        originalInputNames.push($(originalInputs[i]).attr('name'))
+                    }
+
+                    for (i = 0; i < currentInputs.length; i++) {
+                        if (jQuery.inArray($(currentInputs[i]).attr('name'), originalInputNames) === -1) {
+                            $(currentInputs[i]).css('border', '10px solid yellow');
+                            errorHTML += "<p>Form element not part of original HTML. It has the contents <b>" + $(currentInputs[i]).attr('name') + ".</b></p>"
+                            errorCount++;
+                        }
+                    }
+                }
+
+                if (errorCount) {
+                    $('#formIssues').html(errorHTML);
+                } else {
+                    $('#formIssues').html("<h5>Form Issues</h5><p>No Form Issues Detected</p>")
+                }
+
+            });
+
+        });
+
+    };
+
+    var analyseIframes = function() {
+
+        var iframeDetails = [];
+
+        if ($('iframe').length) {
+            $('iframe').each(function() {
+                if ($(this).attr('id')) {
+                    if ($(this).attr('id').indexOf('_hj') < 0) {
+                        iframeDetails.push(this);
+                    }
+                } else {
+                    iframeDetails.push(this);
+                }
+            })
+        }
+
+        if (iframeDetails.length === 0) {
+            $('#iFrameIssues').html("<h5>iFrame Issues</h5><p>No iFrame issues Detected</p>");
+        } else {
+            var iFrameHTML = "<h5>iFrame Issues</h5><p>There are " + iframeDetails.length + " iFrame(s) Detected on this page. They're highlighted with Orange borders.</p>"
+            // Code to run through problematic inputs (and higlight them!)
+            $(iframeDetails).each(function() {
+                $(this).css('border', '10px solid orange');
+            })
+            $('#iFrameIssues').html(iFrameHTML);
+        }
+
+    }
+
+    var getPageAnalysis = function() {
+
+        var badForms = [];
+        var badInputs = [];
+        var iFrames = [];
+        var badHTML = [];
+
+        var result = "";
+
+        // Check for forms, run analysis
+
+        if ($('form').length) {
+            analyseFormData();
+        } else {
+            $('#formIssues').html("<h5>Form issues</h5><p>No forms detected</p>")
+        }
+
+        // Check for inputs, run analysis
+
+        if ($('input').length) {
+            analyseInputData();
+        } else {
+            $('#inputIssues').html("<h5>Input issues</h5><p>No inputs detected</p>")
+        }
+
+        // Check for iframes, run analysis 
+
+        if ($('iframe').length) {
+            analyseIframes();
+        } else {
+            $('#iFrameIssues').html("<h5>Input issues</h5><p>No iFrames detected</p>")
+        }
+
+        // Check for HTML Errors
+
+        getHTMLErrors();
+
+        // Update debugger display
+
     };
 
     var displayTarget = function(target) {
