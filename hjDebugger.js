@@ -409,7 +409,7 @@
         var errorCount = error_object.messages.length;
 
         if (errorCount === 0) {
-            $('#_hjDebuggerTabHTML').append("<h5>No Errors Detected</h5>");
+            $('#_hjDebuggerTabHTML').append("<h5>No HTML Errors Detected</h5>");
         } else {
             var errors = [];
             $("#HTMLErrors").html(errorCount);
