@@ -417,8 +417,10 @@
         var elementIDs = [];
 
         jQuery('form > input').each(function() {
-            if (jQuery(this).attr('id').indexOf('_hj') < 0) {
-                elementIDs.push(jQuery(this).attr('id'));
+            if (jQuery(this).attr('id')) {
+                if (jQuery(this).attr('id').indexOf('_hj') < 0) {
+                    elementIDs.push(jQuery(this).attr('id'));
+                }
             }
         });
 
@@ -431,7 +433,7 @@
             });
             for (var i = 0; i < uniqueIDs.length; i++) {
                 errorHTML += "<p>The ID <b>" + uniqueIDs[i] + "</b> is used multiple times.";
-                jQuery('#'+uniqueIDs[i]).css('border', '10px solid yellow');
+                jQuery('#' + uniqueIDs[i]).css('border', '10px solid yellow');
                 errorCount++;
             }
         }
