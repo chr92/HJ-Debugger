@@ -70,7 +70,7 @@
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabPolls">' + getPollInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabSurveys">' + getSurveyInfo() + '</div>' +
                 '   <div class="_hjDebuggerTab" id="_hjDebuggerTabRecruiters">' + getTesterInfo() + '</div>' +
-                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML"><div id=\"htmlIssues\"><h5>HTML Issues</h5></div><div id=\"formIssues\"><h5>Form issues</h5></div><div id=\"inputIssues\"><h5>Input Issues</h5></h5></div><div id=\"iFrameIssues\"><h5>iFrame Issues<h5></div></div>' +
+                '   <div class="_hjDebuggerTab" id="_hjDebuggerTabHTML"><div id=\"formIssues\"><h5>Form issues</h5></div><div id=\"inputIssues\"><h5>Input Issues</h5></h5></div><div id=\"iFrameIssues\"><h5>iFrame Issues<h5></div><div id=\"htmlIssues\"><h5>HTML Issues</h5></div></div>' +
                 '</div>'
             );
 
@@ -293,7 +293,6 @@
 
     var getHTMLErrors = function() {
 
-        // Get HTML Errors
         $.get('#', function(html) {
 
             var formData = new FormData();
@@ -314,7 +313,6 @@
                         $('#htmlIssues').html("<h5>HTML Issues</h5><p>No HTML issues detected</p>");
                     } else {
                         var errors = [];
-                        $("#_hjDebuggerSectionHTML").addClass("on");
 
                         var errorHTML = "<h5>HTML Issues</h5><table><tr><th>Line</th><th>Error</th><th>Extract</th></tr><p>Form/Input errors are higlighted in Blue</p>";
 
@@ -334,6 +332,10 @@
 
                         errorHTML += "</table>";
                         $('#htmlIssues').html(errorHTML);
+
+                        $('#HTMLErrors').text(parseInt($('#HTMLErrors').text()) + totalErrors);
+                        $("#_hjDebuggerSectionHTML").addClass("on");
+
                     }
                 },
                 error: function() {
@@ -372,6 +374,8 @@
                 inputHTML += "<p>" + count + ". " + $(this).attr('id') + "</p>";
             })
             $('#inputIssues').html(inputHTML);
+            $('#HTMLErrors').text(parseInt($('#HTMLErrors').text()) + inputsOutsideForms.length);
+            $("#_hjDebuggerSectionHTML").addClass("on");
         }
 
     }
@@ -401,6 +405,42 @@
             }
         });
 
+        var errorCount = 0;
+        var errorHTML = "<h5>Form Issues</h5><p>Issues highlighted in yellow</p>"
+
+        function findDuplicates(arr) {
+            var duplicates = [];
+            for (var i = 0; i < arr.length; i++) {
+                if ((arr.lastIndexOf(arr[i]) != i) &&
+                    (duplicates.indexOf(arr[i]) == -1)) {
+                    duplicates.push(arr[i]);
+                }
+            }
+            return duplicates;
+        }
+
+        var elementIDs = [];
+
+        $('form > input').each(function() {
+            if ($(this).attr('id').indexOf('_hj') < 0) {
+                elementIDs.push($(this).attr('id'));
+            }
+        });
+
+        var duplicateIDs = findDuplicates(elementIDs);
+
+        if (duplicateIDs) {
+            var uniqueIDs = [];
+            jQuery.each(duplicateIDs, function(i, el) {
+                if (jQuery.inArray(el, uniqueIDs) === -1) uniqueIDs.push(el);
+            });
+            for (i = 0; i < uniqueIDs.length; i++) {
+                errorHTML += "<p>The ID <b>" + uniqueIDs[i] + "</b> is used multiple times."
+                $('#'+uniqueIDs[i]).css('border', '10px solid yellow');
+                errorCount++;
+            }
+        }
+
         var originalForms = [];
         var originalInputs = [];
 
@@ -416,9 +456,6 @@
                     originalForms.push(this);
                 }
             })
-
-            var errorCount = 0;
-            var errorHTML = "<h5>Form Issues</h5><p>Issues highlighted in yellow</p>"
 
             // 1a. Are forms part of original HTML?
 
@@ -468,6 +505,9 @@
 
                 if (errorCount) {
                     $('#formIssues').html(errorHTML);
+                    $('#HTMLErrors').text(parseInt($('#HTMLErrors').text()) + errorCount);
+                    $("#_hjDebuggerSectionHTML").addClass("on");
+
                 } else {
                     $('#formIssues').html("<h5>Form Issues</h5><p>No HotJar Specific Form Issues Detected</p>")
                 }
@@ -503,6 +543,8 @@
                 $(this).css('border', '10px solid orange');
             })
             $('#iFrameIssues').html(iFrameHTML);
+            $('#HTMLErrors').text(parseInt($('#HTMLErrors').text()) + iframeDetails.length);
+            $("#_hjDebuggerSectionHTML").addClass("on");
         }
 
     }
