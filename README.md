@@ -1,5 +1,7 @@
 # Hotjar Debugger
 
+![Screenshot of Debugger](https://cl.ly/051s45121l0x/Image%202017-08-09%20at%207.02.25%20PM.png)
+
 To use the debugger, copy and paste this script into your JavaScript console, or the address bar of your browser.
 
 ```javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://chr92.github.io/HJ-Debugger/hjDebugger.js?r='+Date.now();})();```
