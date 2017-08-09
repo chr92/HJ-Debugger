@@ -360,7 +360,7 @@
         });
 
         if (inputsOutsideForms.length === 0) {
-            jQuery('#inputIssues').html("<h5>Input Issues</h5><p>No HotJar Specific Input Issues Detected</p>");
+            jQuery('#inputIssues').html("<h5>Input Issues</h5><p>No Hotjar Specific Input Issues Detected</p>");
         } else {
             var count = 1;
             var inputHTML = "<h5>Input Issues</h5><p>" + inputsOutsideForms.length + " inputs detected outside forms, they're higlighted with Red Borders.<br>Here are their IDs:</p>";
@@ -502,7 +502,7 @@
                     jQuery("#_hjDebuggerSectionHTML").addClass("on");
 
                 } else {
-                    jQuery('#formIssues').html("<h5>Form Issues</h5><p>No HotJar Specific Form Issues Detected</p>");
+                    jQuery('#formIssues').html("<h5>Form Issues</h5><p>No Hotjar Specific Form Issues Detected</p>");
                 }
 
             });
@@ -528,7 +528,7 @@
         }
 
         if (iframeDetails.length === 0) {
-            jQuery('#iFrameIssues').html("<h5>iFrame Issues</h5><p>No HotJar Specific iFrame issues Detected</p>");
+            jQuery('#iFrameIssues').html("<h5>iFrame Issues</h5><p>No Hotjar Specific iFrame issues Detected</p>");
         } else {
             var iFrameHTML = "<h5>iFrame Issues</h5><p>There are " + iframeDetails.length + " iFrame(s) Detected on this page. They're highlighted with Orange borders.</p>";
             jQuery(iframeDetails).each(function() {

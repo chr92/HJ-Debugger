@@ -1,4 +1,4 @@
-# HotJar Debugger
+# Hotjar Debugger
 
 To use the debugger, copy and paste this script into your JavaScript console, or the address bar of your browser.
 
@@ -6,7 +6,7 @@ To use the debugger, copy and paste this script into your JavaScript console, or
 
 This debugger has 4 key features, it can detect:
 
-- HTML form issues that prevent HotJar Tracking
+- HTML form issues that prevent Hotjar Tracking
 - Input issues
 - The presence of iFrames on a page
 - General HTML Issues
@@ -15,7 +15,7 @@ You can test the features on this purposely broken website: https://chr92.github
 
 ## HTML Form Issues
 
-There are a number of reasons an HTML form might not be picked up by HotJar, or perform in an unexpected way. This tool checks a number of them:
+There are a number of reasons an HTML form might not be picked up by Hotjar, or perform in an unexpected way. This tool checks a number of them:
 
 1. Are there multiple elements with the same ID in forms?
 2. Have forms been added to the HTML source by a script?
