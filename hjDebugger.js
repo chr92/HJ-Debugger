@@ -325,8 +325,8 @@
 
                         var totalErrors = errors.length;
 
-                        for (var x = 0; i < errors.length; x++) {
-                            errorHTML += errors[x].getHTML();
+                        for (var i = 0; i < errors.length; i++) {
+                            errorHTML += errors[i].getHTML();
                         }
 
                         errorHTML += "</table>";
@@ -336,9 +336,6 @@
                         jQuery("#_hjDebuggerSectionHTML").addClass("on");
 
                     }
-                },
-                error: function() {
-                    console.log(arguments);
                 }
             });
         });
@@ -459,7 +456,6 @@
             if (currentForms.length != originalForms.length) {
 
                 for (var i = 0; i < currentForms.length; i++) {
-                    console.log(jQuery.inArray(currentForms[i], originalForms));
                     if (jQuery.inArray(currentForms[i], originalForms) === -1) {
                         jQuery(currentForms[i]).css('border', '10px solid yellow');
                         errorHTML += "<p>Form element(s) not originally part of page. It has the contents <b>" + jQuery(currentForms[i]).text() + ".</b></p>";
@@ -489,10 +485,10 @@
                         originalInputNames.push(jQuery(originalInputs[i]).attr('name'));
                     }
 
-                    for (var x = 0; i < currentInputs.length; x++) {
-                        if (jQuery.inArray(jQuery(currentInputs[x]).attr('name'), originalInputNames) === -1) {
-                            jQuery(currentInputs[x]).css('border', '10px solid yellow');
-                            errorHTML += "<p>Form element not part of original HTML. It has the contents <b>" + jQuery(currentInputs[x]).attr('name') + ".</b></p>";
+                    for (var i = 0; i < currentInputs.length; i++) {
+                        if (jQuery.inArray(jQuery(currentInputs[i]).attr('name'), originalInputNames) === -1) {
+                            jQuery(currentInputs[i]).css('border', '10px solid yellow');
+                            errorHTML += "<p>Form element not part of original HTML. It has the contents <b>" + jQuery(currentInputs[i]).attr('name') + ".</b></p>";
                             errorCount++;
                         }
                     }
